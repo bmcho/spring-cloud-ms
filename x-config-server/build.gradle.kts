@@ -4,7 +4,7 @@ plugins {
     kotlin("plugin.spring")
 }
 
-group = "org.springcloudms"
+group = "com.springcloudms"
 
 repositories {
     mavenCentral()
