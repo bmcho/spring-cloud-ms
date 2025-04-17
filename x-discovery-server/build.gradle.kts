@@ -1,24 +1,8 @@
-plugins {
-    id("org.springframework.boot")
-    kotlin("jvm")
-    kotlin("plugin.spring")
-}
-
-group = "org.springcloudms"
-version = "1.0-SNAPSHOT"
-
-repositories {
-    mavenCentral()
-}
+apply(plugin = "org.springframework.boot")
+apply(plugin = "org.jetbrains.kotlin.jvm")
+apply(plugin = "org.jetbrains.kotlin.plugin.spring")
 
 dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-server")
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-kotlin {
-    jvmToolchain(17)
+    implementation("org.springframework.boot:spring-boot-starter-web")
 }

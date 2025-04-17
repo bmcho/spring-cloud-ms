@@ -21,8 +21,10 @@ subprojects {
 
     // 의존성 추가 (안정적으로 작동)
     dependencies {
-        add("implementation", "org.jetbrains.kotlin:kotlin-reflect")
-        add("implementation", "org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+        add("implementation", "org.jetbrains.kotlin:kotlin-reflect:1.9.23")
+        add("implementation", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.23")
+        add("testImplementation", "org.jetbrains.kotlin:kotlin-test:1.9.23")
+
         add("testImplementation", "org.springframework.boot:spring-boot-starter-test") {
             exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         }

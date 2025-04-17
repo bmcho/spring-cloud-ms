@@ -1,23 +1,8 @@
-plugins {
-    id("org.springframework.boot")
-    kotlin("jvm")
-    kotlin("plugin.spring")
-}
-
-group = "com.springcloudms"
-
-repositories {
-    mavenCentral()
-}
+apply(plugin = "org.springframework.boot")
+apply(plugin = "org.jetbrains.kotlin.jvm")
+apply(plugin = "org.jetbrains.kotlin.plugin.spring")
 
 dependencies {
     implementation("org.springframework.cloud:spring-cloud-config-server")
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
-kotlin {
-    jvmToolchain(17)
-}
