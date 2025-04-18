@@ -8,3 +8,4 @@ rootProject.name = "spring-cloud-ms"
 include("x-config-server")
 include("x-discovery-server")
 include("x-api-gateway")
+include("x-auth-service")
