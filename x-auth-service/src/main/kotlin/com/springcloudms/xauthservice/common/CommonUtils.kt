@@ -1,4 +1,4 @@
-package com.springcloudms.xauthservice.util
+package com.springcloudms.xauthservice.common
 
 import java.security.SecureRandom
 

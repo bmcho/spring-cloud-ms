@@ -1,4 +1,4 @@
-package com.springcloudms.xauthservice.infrastructure.passwordEncorder
+package com.springcloudms.xauthservice.infrastructure.persistence
 
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
