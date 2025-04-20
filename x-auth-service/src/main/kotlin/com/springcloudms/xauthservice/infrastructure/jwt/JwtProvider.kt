@@ -16,6 +16,7 @@ import java.security.interfaces.RSAPublicKey
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import java.util.*
+import java.util.Collections.emptyList
 
 @Component
 class JwtProvider(
@@ -27,8 +28,17 @@ class JwtProvider(
 
     @PostConstruct
     fun initKeys() {
-        val privateKeyBytes = ClassPathResource(jwtProperties.privateKeyPath.removePrefix("classpath:")).inputStream.readBytes()
-        val publicKeyBytes = ClassPathResource(jwtProperties.publicKeyPath.removePrefix("classpath:")).inputStream.readBytes()
+
+        val privateKeyBytes = loadPemKey(
+            jwtProperties.privateKeyPath.removePrefix("classpath:"),
+            "-----BEGIN PRIVATE KEY-----",
+            "-----END PRIVATE KEY-----"
+        )
+        val publicKeyBytes = loadPemKey(
+            jwtProperties.publicKeyPath.removePrefix("classpath:"),
+            "-----BEGIN PUBLIC KEY-----",
+            "-----END PUBLIC KEY-----"
+        )
 
         val keyFactory = KeyFactory.getInstance("RSA")
         privateKey = keyFactory.generatePrivate(PKCS8EncodedKeySpec(privateKeyBytes)) as RSAPrivateKey
@@ -98,5 +108,18 @@ class JwtProvider(
     fun getEmail(token: String): String {
         val signedJWT = SignedJWT.parse(token)
         return signedJWT.jwtClaimsSet.getStringClaim("email") ?: ""
+    }
+
+    private fun loadPemKey(resourcePath: String, beginMarker: String, endMarker: String): ByteArray {
+        val keyText = ClassPathResource(resourcePath.removePrefix("classpath:"))
+            .inputStream.bufferedReader().use { it.readText() }
+            .replace("\r", "").replace("\n", "") // 줄바꿈 제거
+
+        val base64Encoded = keyText
+            .replace(beginMarker, "")
+            .replace(endMarker, "")
+            .trim()
+
+        return Base64.getDecoder().decode(base64Encoded)
     }
 }
