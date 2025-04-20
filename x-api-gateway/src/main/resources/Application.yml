@@ -12,6 +12,7 @@ spring:
       discovery:
         locator:
           enabled: true  # Eureka에 등록된 서비스 자동 인식
+          lower-case-service-id: false # default = false, 나중에 문제생기면 전부 소문자로
 #      routes:
 #        - id: user-service
 #          uri: lb://user-service
@@ -22,10 +23,54 @@ spring:
 #          predicates:
 #            - Path=/orders/**
 
+# 추후 서버 안정성, 보안성을 위한 custom filter 필요
+# ex)
+#  default-filters:
+#    - name: Retry
+#      args:
+#        retries: 3
+#        statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR
+#        methods: GET
+#        backoff:
+#          firstBackoff: 100ms
+#          maxBackoff: 1000ms
+#          factor: 2
+#    - name: RequestRateLimiter
+#      args:
+#        redis-rate-limiter.replenishRate: 10
+#        redis-rate-limiter.burstCapacity: 20
+#        key-resolver: "#{@ipKeyResolver}"  # 필터에 bean 등록 필요
+#    globalcors:
+#      corsConfigurations:
+#        '[/**]':
+#          allowedOrigins: "*"
+#          allowedMethods: "*"
+#          allowedHeaders: "*"
+#          allowCredentials: true
+
+
   config:
     import: optional:xconfigserver:http://localhost:8888
+
+
+
+# discorvery - ereka
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761
+      defaultZone: http://localhost:8761/eureka
+    registry-fetch-interval-seconds: 5
+
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
+    instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${server.port}
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
