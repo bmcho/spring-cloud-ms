@@ -46,7 +46,7 @@ class JwtProvider(
     }
 
     fun generateToken(
-        userId: String,
+        userId: Long,
         username: String,
         email: String,
         roles: List<String>,
@@ -85,9 +85,30 @@ class JwtProvider(
         }
     }
 
-    private fun isTokenExpired(signedJWT: SignedJWT): Boolean {
-        val expiration = signedJWT.jwtClaimsSet.expirationTime
-        return expiration.before(Date())
+    fun generateRefreshToken(
+        userId: Long,
+        username: String,
+        audience: String = "web"
+    ): String {
+        val now = Date()
+        val expiry = Date(now.time + jwtProperties.refreshExpirationMs)
+
+        val claims = JWTClaimsSet.Builder()
+            .subject(username)
+            .issueTime(now)
+            .expirationTime(expiry)
+            .issuer("my-service")
+            .audience(audience)
+            .claim("userId", userId)
+            .claim("type", "refresh")    // 구분용 클레임
+            .build()
+
+        val signedJWT = SignedJWT(
+            JWSHeader.Builder(JWSAlgorithm.RS256).build(),
+            claims
+        )
+        signedJWT.sign(RSASSASigner(privateKey))
+        return signedJWT.serialize()
     }
 
     fun getUsername(token: String): String {
@@ -110,6 +131,14 @@ class JwtProvider(
         return signedJWT.jwtClaimsSet.getStringClaim("email") ?: ""
     }
 
+    fun parseToken(token: String): SignedJWT {
+        return SignedJWT.parse(token)
+    }
+
+    fun parseClaims(token: String): JWTClaimsSet {
+        return parseToken(token).jwtClaimsSet
+    }
+
     private fun loadPemKey(resourcePath: String, beginMarker: String, endMarker: String): ByteArray {
         val keyText = ClassPathResource(resourcePath.removePrefix("classpath:"))
             .inputStream.bufferedReader().use { it.readText() }
@@ -122,4 +151,11 @@ class JwtProvider(
 
         return Base64.getDecoder().decode(base64Encoded)
     }
+
+    private fun isTokenExpired(signedJWT: SignedJWT): Boolean {
+        val expiration = signedJWT.jwtClaimsSet.expirationTime
+        return expiration.before(Date())
+    }
+
+
 }

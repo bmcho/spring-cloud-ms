@@ -11,6 +11,10 @@ class PasswordManager(
         private const val SECRET = "%Go9Z}e2QR9Nf8!7+mbFo!uA[gTJ3m_s-u#P0YaqGWXB)3*q~*TGep(jA_r9pJ]x\n!"
     }
 
+    fun getPasswordEncoder(): PasswordEncoder {
+        return passwordEncoder
+    }
+
     fun encode(rawPassword: String): String {
         val pepperedPassword = rawPassword + SECRET
         return passwordEncoder.encode(pepperedPassword)

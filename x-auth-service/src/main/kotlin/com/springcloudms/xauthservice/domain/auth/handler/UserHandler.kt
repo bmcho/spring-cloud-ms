@@ -1,7 +1,7 @@
 package com.springcloudms.xauthservice.domain.auth.handler
 
-import com.springcloudms.xauthservice.application.auth.dto.*
 import com.springcloudms.xauthservice.application.auth.service.UserService
+import com.springcloudms.xauthservice.domain.auth.command.*
 import org.springframework.stereotype.Service
 
 @Service

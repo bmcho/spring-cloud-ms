@@ -40,3 +40,4 @@ jwt:
   private-key-path: classpath:keys/private.pem
   public-key-path: classpath:keys/public.pem
   expiration-ms: 600000
+  refresh-expiration-ms: Long = 1209600000

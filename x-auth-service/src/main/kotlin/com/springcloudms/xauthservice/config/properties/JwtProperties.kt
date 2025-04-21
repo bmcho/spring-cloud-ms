@@ -8,5 +8,6 @@ import org.springframework.context.annotation.Configuration
 class JwtProperties {
     lateinit var privateKeyPath: String // private.pem 파일 경로
     lateinit var publicKeyPath: String  // public.pem 파일 경로
-    var expirationMs: Long = 600000     // 기분 10분
+    var expirationMs: Long = 600000 // 기분 10분
+    val refreshExpirationMs: Long = 1209600000
 }

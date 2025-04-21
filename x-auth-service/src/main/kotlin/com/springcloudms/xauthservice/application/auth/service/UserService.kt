@@ -1,6 +1,5 @@
 package com.springcloudms.xauthservice.application.auth.service
 
-import com.springcloudms.xauthservice.application.auth.dto.*
 import com.springcloudms.xauthservice.domain.auth.command.*
 import com.springcloudms.xauthservice.domain.auth.model.User
 import com.springcloudms.xauthservice.domain.auth.repository.UserRepository

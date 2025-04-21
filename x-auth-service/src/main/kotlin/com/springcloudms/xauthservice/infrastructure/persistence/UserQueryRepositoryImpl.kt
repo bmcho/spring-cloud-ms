@@ -17,4 +17,12 @@ class UserQueryRepositoryImpl(
             .where(user.username.eq(username))
             .fetchOne()
     }
+
+    override fun findByEmail(email: String): User? {
+        return queryFactory
+            .selectFrom(user)
+            .where(user.email.eq(email))
+            .fetchOne()
+    }
+
 }

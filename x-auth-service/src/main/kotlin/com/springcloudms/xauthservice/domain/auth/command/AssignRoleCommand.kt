@@ -1,4 +1,4 @@
-package com.springcloudms.xauthservice.application.auth.dto
+package com.springcloudms.xauthservice.domain.auth.command
 
 data class AssignRoleCommand(
     val userId: Long,
